@@ -2,7 +2,7 @@ import ToonGlobals
 import ClothingGlobals
 from direct.actor.Actor import Actor
 from direct.fsm.FSM import FSM
-
+from direct.interval.ActorInterval import LerpAnimInterval
 
 class Toon(Actor, FSM):
     def __init__(self, charName, torsoModel, legsModel, torsoAnims, legsAnims, headType):
@@ -51,22 +51,30 @@ class Toon(Actor, FSM):
         self.find('**/boots_long').hide()
         self.find('**/boots_short').hide()
 
-        self.setBlend(frameBlend=True)
+        self.setBlend(animBlend=True, frameBlend=True)
         
     def enterNeutral(self, playRate):
-        self.loop("neutral", playRate)
+        self.lerpAnimation("neutral")
         
     def enterWalk(self, playRate):
-        self.loop("walk", playRate)
+        self.lerpAnimation("walk", playRate = playRate)
         
     def enterRun(self, playRate):
-        self.loop("run", playRate)
+        self.lerpAnimation("run")
         
     def enterRunningJumpIdle(self, playRate):
-        self.loop("running-jump-idle", playRate)
+        self.lerpAnimation("running-jump-idle", doLoop = False)
         
     def enterJumpIdle(self, playRate):
-        self.loop("jump-idle", playRate)
+        self.lerpAnimation("jump-idle", doLoop = False)
         
     def enterBigJump(self, playRate):
-        self.loop("jump", playRate)
+        self.lerpAnimation("jump", doLoop = False)
+
+    def lerpAnimation(self, nextAnim, playRate = 1.0, doLoop = True):
+        LerpAnimInterval(self, 0.1, self.getCurrentAnim(), nextAnim).start()
+        self.stop(self.getCurrentAnim())
+        if doLoop:
+            self.loop(nextAnim, playRate)
+        else:
+            self.play(nextAnim)
