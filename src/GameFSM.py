@@ -1,44 +1,60 @@
 from direct.fsm.FSM import FSM
 import ToonGlobals, ClothingGlobals
-from Toon import Toon
-from characterController import characterController
+from PlayerToon import PlayerToon
+from direct.gui.DirectGui import *
 
 
 class MainFSM(FSM):
     def __init__(self):
         FSM.__init__(self, 'MainFSM')
-        
-    def createPlayerChar(self):
-        self.actor = Toon('player', ToonGlobals.boyTorsoModelDict['s'], ToonGlobals.boyLegsModelDict['s'], ToonGlobals.boyMediumTorsoAnimDict, ToonGlobals.boySmallLegsAnimDict, 's')
-        self.player = characterController(self.actor)
-        self.actor.reparentTo(render)
     
     def createEnv(self):
         self.env = loader.loadModel('phase_3.5/models/neighborhoods/toontown_central')
         self.env.reparentTo(render)
         
     def enterMain(self):
-        self.createPlayerChar()
+        self.localAvatar = PlayerToon()
         self.createEnv()
 
 
 class MainMenuFSM(FSM):
     def __init__(self):
         FSM.__init__(self, 'MainMenuFSM')
-        self.frame = None
-        self.playButton = None
-        
+        self.frame = DirectFrame(frameColor=(0, 0, 0, 0), frameSize=(-1, 1, -1, 1), pos=(0, 0, 0))
+        self.frame.enableEdit()
+        self.playButton = DirectButton(text="Play", command=self.request, extraArgs=['PlayGame'], pos=(0, 0, -0.56), scale=0.1)
+        self.playButton.reparentTo(self.frame)
+        self.title = OnscreenText(text="Game Title", pos=(0, 0.56))
+        self.title.reparentTo(self.frame)
+        base.accept('f1', self.printDetails)
+    
+    def printDetails(self):
+        print self.playButton.getPos()
+        print self.playButton.getScale()
+        print self.title.getPos()
+        print self.title.getScale()
+    
     def enterMain(self):
-        pass
+        self.playButton.show()
+        self.title.show()
     
     def exitMain(self):
-        pass
+        self.playButton.hide()
+        self.title.hide()
     
     def enterOptions(self):
         pass
     
     def exitOptions(self):
         pass
+    
+    def enterPlayGame(self):
+        self.frame.destroy()
+        self.playButton.destroy()
+        self.title.destroy()
+        mainFSM = MainFSM()
+        mainFSM.request('Main')
+        
 
 
 class AvatarGuiFSM(FSM):
