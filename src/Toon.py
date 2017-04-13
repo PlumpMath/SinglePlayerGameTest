@@ -63,13 +63,13 @@ class Toon(Actor, FSM):
         self.lerpAnimation("run")
         
     def enterRunningJumpIdle(self, playRate):
-        self.lerpAnimation("running-jump-idle", doLoop = False)
+        self.lerpAnimation("running-jump-idle")
         
     def enterJumpIdle(self, playRate):
-        self.lerpAnimation("jump-idle", doLoop = False)
+        self.lerpAnimation("jump-idle")
         
     def enterBigJump(self, playRate):
-        self.lerpAnimation("jump", doLoop = False)
+        self.lerpAnimation("jump")
 
     def lerpAnimation(self, nextAnim, playRate = 1.0, doLoop = True):
         LerpAnimInterval(self, 0.1, self.getCurrentAnim(), nextAnim).start()
