@@ -17,7 +17,8 @@ class characterController():
         self.walkControls = GravityWalker(legacyLifter=True)
         self.walkControls.setWallBitMask(self.wallBitmask)
         self.walkControls.setFloorBitMask(self.floorBitmask)
-        self.walkControls.setWalkSpeed(16.0, 24.0, 8.0, 80.0)
+                        #Forward, Jump, Backwards, Left/Right
+        self.walkControls.setWalkSpeed(24.0, 30.0, 8.0, 80.0)
         self.walkControls.initializeCollisions(base.cTrav, self.actor, floorOffset=0.025, reach=4.0)
         self.walkControls.setAirborneHeightFunc(self.getAirborneHeight)
         self.walkControls.enableAvatarControls()

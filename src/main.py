@@ -1,8 +1,12 @@
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import loadPrcFile
 from GameFSM import MainMenuFSM
+<<<<<<< HEAD
 from rpcore import RenderPipeline
 
+=======
+##asd
+>>>>>>> master
 
 class Main(ShowBase):
     def __init__(self):
@@ -14,6 +18,6 @@ class Main(ShowBase):
         render.setShaderAuto()
         menu = MainMenuFSM()
         menu.request('Main')
-    
+
 app = Main()
 app.run()
