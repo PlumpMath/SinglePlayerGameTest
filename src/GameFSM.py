@@ -3,6 +3,8 @@ import ToonGlobals, ClothingGlobals
 from PlayerToon import PlayerToon
 from direct.gui.DirectGui import *
 from NpcToon import NpcToon
+from panda3d.core import AmbientLight, DirectionalLight, Spotlight
+from panda3d.core import Vec3, Vec4
 
 
 class MainFSM(FSM):
