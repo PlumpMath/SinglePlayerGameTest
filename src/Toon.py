@@ -15,6 +15,12 @@ class Toon(Actor, FSM):
         self.attach('Torso', 'Legs', 'joint_hips')
         self.attachHead(headType)
         self.charName = charName
+        self.gloveMaterial = Material()
+        self.gloveMaterial.setDiffuse((0, 0, 0, 1))
+        self.gloveMaterial.clearEmission()
+        self.gloveMaterial.clearSpecular()
+        self.gloveMaterial.setShininess(0)
+        self.find('**/hands').setMaterial(self.gloveMaterial)
         self.setBlend(animBlend=True, frameBlend=True)
         
     def attachHead(self, headType):
@@ -40,10 +46,10 @@ class Toon(Actor, FSM):
         
         self.headMaterial = Material()
         self.headMaterial.setDiffuse((0, 0, 1, 1))
-        self.Head.setMaterial(self.headMaterial)
         self.headMaterial.clearEmission()
         self.headMaterial.clearSpecular()
         self.headMaterial.setShininess(0)
+        self.Head.setMaterial(self.headMaterial)
         
         
         self.Neck = self.find('**/def_head')
