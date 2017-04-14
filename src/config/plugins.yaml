@@ -9,10 +9,10 @@ enabled:
     #- color_correction
     #- forward_shading
     #- motion_blur
-    #- pssm
+    - pssm
     #- scattering
     #- skin_shading
-    #- sky_ao
+    - sky_ao
     #- smaa
     #- ssr
     # - clouds
