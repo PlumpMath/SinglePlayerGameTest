@@ -3,6 +3,7 @@ import ClothingGlobals
 from direct.actor.Actor import Actor
 from direct.fsm.FSM import FSM
 from direct.interval.ActorInterval import LerpAnimInterval
+from panda3d.core import Material
 
 class Toon(Actor, FSM):
     def __init__(self, charName, torsoModel, legsModel, torsoAnims, legsAnims, headType):
@@ -36,6 +37,10 @@ class Toon(Actor, FSM):
         self.Head.find('**/ears-short').show()
         self.Head.find('**/ears-long').hide()
         self.headType = 's'
+        
+        self.headMaterial = Material()
+        self.headMaterial.setAmbient((0, 0, 1, 1))
+        self.Head.setMaterial(self.headMaterial)
         
         self.Neck = self.find('**/def_head')
         self.Head.reparentTo(self.Neck)
