@@ -2,6 +2,7 @@ from direct.fsm.FSM import FSM
 import ToonGlobals, ClothingGlobals
 from PlayerToon import PlayerToon
 from direct.gui.DirectGui import *
+from NpcToon import NpcToon
 
 
 class MainFSM(FSM):
@@ -14,6 +15,7 @@ class MainFSM(FSM):
         
     def enterMain(self):
         self.localAvatar = PlayerToon()
+        npc = NpcToon('npc', ToonGlobals.boyTorsoModelDict['s'], ToonGlobals.boyLegsModelDict['s'], ToonGlobals.boySmallTorsoAnimDict, ToonGlobals.boySmallLegsAnimDict, 's')
         self.createEnv()
 
 

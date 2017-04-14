@@ -13,6 +13,8 @@ class Toon(Actor, FSM):
                 'Legs': legsAnims})
         self.attach('Torso', 'Legs', 'joint_hips')
         self.attachHead(headType)
+        self.charName = charName
+        self.setBlend(animBlend=True, frameBlend=True)
         
     def attachHead(self, headType):
         self.Head = loader.loadModel('phase_3/models/char/mouse-heads-1000.bam')
@@ -35,45 +37,36 @@ class Toon(Actor, FSM):
         self.Head.find('**/ears-long').hide()
         self.headType = 's'
         
-        self.torso = ToonGlobals.boyTorsoModelDict['s']
-        self.legs = ToonGlobals.boyLegsModelDict['s']
-        self.torsoAnimDict = ToonGlobals.boyMediumTorsoAnimDict
-        self.legsAnimDict = ToonGlobals.boySmallLegsAnimDict
-        
-        self.actorCamNode = render.attachNewNode('actorCamNode')
-        self.actorCamNode.setPos(0, 0, 2.5)
-        self.actorCamNode.reparentTo(self)
-        
         self.Neck = self.find('**/def_head')
         self.Head.reparentTo(self.Neck)
 
         self.find('**/shoes').hide()
         self.find('**/boots_long').hide()
         self.find('**/boots_short').hide()
+        
+    def enterNeutral(self, playRate, doLoop=True):
+        self.lerpAnimation("neutral", playRate, doLoop)
+        
+    def enterWalk(self, playRate, doLoop=True):
+        self.lerpAnimation("walk", playRate, doLoop)
+        
+    def enterRun(self, playRate, doLoop=True):
+        self.lerpAnimation("run", playRate, doLoop)
+        
+    def enterRunningJumpIdle(self, playRate, doLoop=True):
+        self.lerpAnimation("running-jump-idle", playRate, doLoop)
+        
+    def enterJumpIdle(self, playRate, doLoop=True):
+        self.lerpAnimation("jump-idle", playRate, doLoop)
+        
+    def enterBigJump(self, playRate, doLoop=True):
+        self.lerpAnimation("jump", playRate, doLoop)
 
-        self.setBlend(animBlend=True, frameBlend=True)
-        
-    def enterNeutral(self, playRate):
-        self.lerpAnimation("neutral")
-        
-    def enterWalk(self, playRate):
-        self.lerpAnimation("walk", playRate = playRate)
-        
-    def enterRun(self, playRate):
-        self.lerpAnimation("run")
-        
-    def enterRunningJumpIdle(self, playRate):
-        self.lerpAnimation("running-jump-idle")
-        
-    def enterJumpIdle(self, playRate):
-        self.lerpAnimation("jump-idle")
-        
-    def enterBigJump(self, playRate):
-        self.lerpAnimation("jump")
-
-    def lerpAnimation(self, nextAnim, playRate = 1.0, doLoop = True):
-        LerpAnimInterval(self, 0.1, self.getCurrentAnim(), nextAnim).start()
-        self.stop(self.getCurrentAnim())
+    def lerpAnimation(self, nextAnim, playRate, doLoop = True):
+        print playRate
+        if self.getCurrentAnim() != nextAnim:
+            LerpAnimInterval(self, 0.1, self.getCurrentAnim(), nextAnim).start()
+            self.stop(self.getCurrentAnim())
         if doLoop:
             self.loop(nextAnim, playRate)
         else:

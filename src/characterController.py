@@ -43,9 +43,7 @@ class characterController():
         self.setWatchKey('shift-arrow_right', 'turnRight', 'right')
         self.setWatchKey('control', 'jump', 'control')
  
-        self.movingNeutral, self.movingForward = (False, False)
-        self.movingRotation, self.movingBackward = (False, False)
-        self.movingJumping = False
+        self.animState = ''
         
         base.taskMgr.add(self.handleMovement, 'controlManager')
         
@@ -65,39 +63,22 @@ class characterController():
         base.accept(key, watchKey, [True])
         base.accept(key+'-up', watchKey, [False])
                 
-    def setMovementAnimation(self, loopName, playRate=1.0):
+    def setMovementAnimation(self, loopName, playRate=1):
         if 'jump' in loopName:
             loopName = 'JumpIdle'
-            self.movingJumping = True
-            self.movingForward = False
-            self.movingNeutral = False
-            self.movingRotation = False
-            self.movingBackward = False
+            self.animState = 'jump'
         elif loopName == 'run':
             loopName = 'Run'
-            self.movingJumping = False
-            self.movingForward = True
-            self.movingNeutral = False
-            self.movingRotation = False
-            self.movingBackward = False
+            self.animState = 'run'
         elif loopName == 'walk':
             loopName = 'Walk'
-            self.movingJumping = False
-            self.movingForward = False
-            self.movingNeutral = False
-            if playRate == -1.0:
-                self.movingBackward = True
-                self.movingRotation = False
+            if playRate == -1:
+                self.animState = 'backwardswalk'
             else:
-                self.movingBackward = False
-                self.movingRotation = True
+                self.animState = 'forwardswalk'
         elif loopName == 'neutral':
             loopName = 'Neutral'
-            self.movingJumping = False
-            self.movingForward = False
-            self.movingNeutral = True
-            self.movingRotation = False
-            self.movingBackward = False
+            self.animState = 'neutral'
         else:
             self.movingJumping = False
             self.movingForward = False
@@ -106,67 +87,61 @@ class characterController():
             self.movingBackward = False
         if loopName == 'jump-idle':
             loopName = 'JumpIdle'
+            self.animState = 'jumpidle'
         elif loopName == 'running-jump-idle':
             loopName = 'RunningJumpIdle'
+            self.animState = 'runningjumpidle'
         self.actor.request(loopName, playRate)
         
     def handleMovement(self, task):
         if self.keyMap['control'] == 1:
-            print 'control is pressed'
-            if self.keyMap['forward'] or self.keyMap['backward'] or self.keyMap['left'] or self.keyMap['right']:
-                if self.movingJumping == False:
+            if self.keyMap['forward'] == 1 or self.keyMap['backward'] == 1 or self.keyMap['left'] == 1 or self.keyMap['right'] == 1:
+                if self.animState != 'jump':
                     if self.actor.physControls.isAirborne:
                         self.setMovementAnimation('running-jump-idle')
                     else:
-                        if self.keyMap['forward']:
-                            if self.movingForward == False:
+                        if self.keyMap['forward'] == 1:
+                            if self.animState != 'run':
                                 self.setMovementAnimation('run')
-                        elif self.keyMap['backward']:
-                            if self.movingBackward == False:
-                                self.setMovementAnimation('walk', playRate=-1.0)
-                        elif self.keyMap['left'] or self.keyMap['right']:
-                            if self.movingRotation == False:
+                        elif self.keyMap['backward'] == 1:
+                            if self.animState != 'backwardswalk':
+                                self.setMovementAnimation('walk', -1)
+                        elif self.keyMap['left'] == 1 or self.keyMap['right'] == 1:
+                            if self.animState != 'forwardswalk':
                                 self.setMovementAnimation('walk')
                 else:
                     if not self.actor.physControls.isAirborne:
-                        if self.keyMap['forward']:
-                            if self.movingForward == False:
+                        if self.keyMap['forward'] == 1:
+                            if self.animState != 'run':
                                 self.setMovementAnimation('run')
-                        elif self.keyMap['backward']:
-                            if self.movingBackward == False:
-                                self.setMovementAnimation('walk', playRate=-1.0)
-                        elif self.keyMap['left'] or self.keyMap['right']:
-                            if self.movingRotation == False:
+                        elif self.keyMap['backward'] == 1:
+                            if self.animState != 'backwardswalk':
+                                self.setMovementAnimation('walk', -1)
+                        elif self.keyMap['left'] == 1 or self.keyMap['right'] == 1:
+                            if self.animState != 'forwardswalk':
                                 self.setMovementAnimation('walk')
             else:
-                if self.movingJumping == False:
-                    if self.actor.physControls.isAirborne:
+                if self.actor.physControls.isAirborne:
+                    if self.animState != 'jumpidle':
                         self.setMovementAnimation('jump-idle')
-                    else:
-                        if self.movingNeutral == False:
-                            self.setMovementAnimation('neutral')
                 else:
-                    if not self.actor.physControls.isAirborne:
-                        if self.movingNeutral == False:
-                            self.setMovementAnimation('neutral')
+                    if self.animState != 'runningjumpidle':
+                        self.setMovementAnimation('neutral')
         elif self.keyMap['forward'] == 1:
-            print 'up arrow pressed'
-            if self.movingForward == False:
+            if self.animState != 'run':
                 if not self.actor.physControls.isAirborne:
                     self.setMovementAnimation('run')
         elif self.keyMap['backward'] == 1:
-            print 'back arrow pressed'
-            if self.movingBackward == False:
+            if self.animState != 'backwardswalk':
                 if not self.actor.physControls.isAirborne:
-                    self.setMovementAnimation('walk', playRate=-1.0)
-        elif self.keyMap['left'] or self.keyMap['right']:
-            print 'left or right arrow pressed'
-            if self.movingRotation == False:
+                    self.setMovementAnimation('walk', -1)
+        elif self.keyMap['left'] == 1 or self.keyMap['right'] == 1:
+            if self.animState != 'forwardswalk':
                 if not self.actor.physControls.isAirborne:
                     self.setMovementAnimation('walk')
         else:
-            if not self.actor.physControls.isAirborne:
-                if self.movingNeutral == False:
+            if self.animState != 'neutral':
+                if not self.actor.physControls.isAirborne:
                     self.setMovementAnimation('neutral')
         return task.cont
     
