@@ -2,4 +2,4 @@ win-size 1280 720
 window-title Doodle Simulator
 default-model-extension .bam
 direct-gui-edit 1
-model-path /c/Panda3D-1.10.0-x64/bin
+model-path ../resources

@@ -7,7 +7,7 @@ from direct.interval.IntervalGlobal import ActorInterval
 
 
 class characterController():
-    def __init__(self, actor):
+    def __init__(self, actor, enable=True, passMessagesThrough = False):
         self.actor = actor
         
         self.wallBitmask = BitMask32.bit(1)
@@ -43,12 +43,15 @@ class characterController():
         self.setWatchKey('alt-arrow_right', 'turnRight', 'right')
         self.setWatchKey('shift-arrow_right', 'turnRight', 'right')
         self.setWatchKey('control', 'jump', 'control')
+		
  
         self.animState = ''
         
         base.taskMgr.add(self.handleMovement, 'controlManager')
         
         base.accept('f1', self.toggleCollisions)
+		
+	
 
     def getAirborneHeight(self):
         return 3.2375 + 0.025000000000000001

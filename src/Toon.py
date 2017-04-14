@@ -39,8 +39,12 @@ class Toon(Actor, FSM):
         self.headType = 's'
         
         self.headMaterial = Material()
-        self.headMaterial.setAmbient((0, 0, 1, 1))
+        self.headMaterial.setDiffuse((0, 0, 1, 1))
         self.Head.setMaterial(self.headMaterial)
+        self.headMaterial.clearEmission()
+        self.headMaterial.clearSpecular()
+        self.headMaterial.setShininess(0)
+        
         
         self.Neck = self.find('**/def_head')
         self.Head.reparentTo(self.Neck)
