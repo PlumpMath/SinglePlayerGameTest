@@ -20,7 +20,7 @@ class Toon(Actor, FSM):
         self.gloveMaterial.clearEmission()
         self.gloveMaterial.clearSpecular()
         self.gloveMaterial.setShininess(0)
-        self.find('**/hands').setMaterial(self.gloveMaterial)
+        self.setMaterial(self.gloveMaterial)
         self.setBlend(animBlend=True, frameBlend=True)
         
     def attachHead(self, headType):
