@@ -1,7 +1,7 @@
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import loadPrcFile
 from GameFSM import MainMenuFSM
-
+##asd
 
 loadPrcFile("config/Config.prc")
 
@@ -11,6 +11,6 @@ class Main(ShowBase):
         base.disableMouse()
         menu = MainMenuFSM()
         menu.request('Main')
-    
+
 app = Main()
 app.run()
