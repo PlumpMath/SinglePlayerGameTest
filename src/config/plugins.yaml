@@ -6,18 +6,18 @@
 enabled:
     #- ao
     #- bloom
-    - color_correction
-    - forward_shading
+    #- color_correction
+    #- forward_shading
     #- motion_blur
-    - pssm
-    - scattering
-    - skin_shading
-    - sky_ao
-    - smaa
-    - ssr
+    #- pssm
+    #- scattering
+    #- skin_shading
+    #- sky_ao
+    #- smaa
+    #- ssr
     # - clouds
     # - dof
-    - env_probes
+    #- env_probes
     # - fxaa
     # - volumetrics
     # - vxgi
