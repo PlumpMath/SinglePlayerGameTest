@@ -14,6 +14,7 @@ class MainFSM(FSM):
     def createEnv(self):
         self.env = loader.loadModel('phase_3.5/models/neighborhoods/toontown_central')
         self.env.reparentTo(render)
+        base.render_pipeline.prepare_scene(self.env)
         
     def enterMain(self):
         self.localAvatar = PlayerToon()
