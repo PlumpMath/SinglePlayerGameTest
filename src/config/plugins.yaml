@@ -10,7 +10,7 @@ enabled:
     - forward_shading
     #- motion_blur
     - pssm
-    #- scattering
+    - scattering
     #- skin_shading
     - sky_ao
     #- smaa
