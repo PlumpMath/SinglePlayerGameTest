@@ -9,6 +9,7 @@ class Main(ShowBase):
         self.render_pipeline = RenderPipeline()
         self.render_pipeline.create(self)
         self.render_pipeline.daytime_mgr.time = "12:30"
+        self.render_pipeline.set_effect(render, "scene-effect.yaml", {}, sort=250)
         base.render_pipeline = self.render_pipeline
         loadPrcFile('config/Config.prc')
         base.disableMouse()
