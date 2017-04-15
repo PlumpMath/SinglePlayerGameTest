@@ -12,7 +12,7 @@ enabled:
     - pssm
     #- scattering
     #- skin_shading
-    #- sky_ao
+    - sky_ao
     #- smaa
     #- ssr
     #- clouds
