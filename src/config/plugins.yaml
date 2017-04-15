@@ -7,7 +7,7 @@ enabled:
     #- ao
     - bloom
     - color_correction
-    #- forward_shading
+    - forward_shading
     #- motion_blur
     - pssm
     #- scattering
