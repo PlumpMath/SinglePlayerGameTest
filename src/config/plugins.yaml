@@ -6,7 +6,7 @@
 enabled:
     #- ao
     - bloom
-    #- color_correction
+    - color_correction
     #- forward_shading
     #- motion_blur
     - pssm
